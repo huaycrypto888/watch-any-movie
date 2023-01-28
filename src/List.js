@@ -19,22 +19,133 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Detail from "./Detail";
 
 const List = () => {
-  const [stext, setstext] = useState("avengers");
+  const [stext, setstext] = useState("avenger");
+  const [menuleft, setmenuleft] = useState([]);
+  const [menuright, setmenuright] = useState([]);
   const [result, setresult] = useState([]);
   const [result2, setresult2] = useState([]);
   const [open, setOpen] = React.useState(false);
   
   const [detailbool, setdetailbool] = useState(false);
   const [imval, setimval] = useState();
+ 
+
+
 
   const showChange = (event) => {
     setstext(event.target.value.toLowerCase());
   };
+
+  const showmenuleft = () => {
+    axios
+    
+      .get(`https://doomovies-api.gxc-x.com/api/genres`)
+      // .get(`https://www.omdbapi.com/?apikey=4eb65943&s=${stext}`)
+      .then((res) => {
+        setmenuleft(res.data.data.map((p) => p));
+      })
+      .catch((error) => {
+        //alert("No search results found!! check for spelling ");
+        setOpen(true);
+      });
+  };
+  // const showmoviesbygenre = (genreid) => {
+  //   console.log(genreid);
+  //   // axios
+    
+  //   //   .get(`http://0.0.0.0:1337/api/genres`)
+  //   //   // .get(`https://www.omdbapi.com/?apikey=4eb65943&s=${stext}`)
+  //   //   .then((res) => {
+  //   //     setmenuleft(res.data.data.map((p) => p));
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     //alert("No search results found!! check for spelling ");
+  //   //     setOpen(true);
+  //   //   });
+  // };
+
+  // function showmoviesbygenre(type_movies) {
+  //   console.log(type_movies)
+  //   axios
+  //   .get(`http://localhost:1337/api/movies?fields[0]=title&fields[1]=type_movies&fields[2]=year&fields[3]=imdb&fields[4]=type&fields[5]=image_poster&filters[type_movies][$contains]=${type_movies}`)
+  //     // .get(`http://localhost:1337/api/movies?fields[0]=title&fields[1]=year&fields[2]=imdb&fields[3]=type&fields[4]=image_poster&pagination[page]=1&pagination[pageSize]=10&filters[title][$contains]=${stext}`)
+  //     // .get(`http://localhost:1337/api/movies`)
+  //     .then((res) => {
+
+  //       // setresult(res.data.data.map((p) => p));
+  //       console.console.log('result data = ');
+  //       console.console.log(res.data.data);
+  //       // setresult(res.data.Search.map((p) => p));
+  //       // console.log(res.data) // maiza
+  //       // console.log(res.data.data[0].attributes) // maiza
+  //       // console.log(res.data.Search[0]) // maiza
+
+  //     })
+  //     .catch((error) => {
+  //       // alert("No search results found!! check for spelling ");
+  //       setOpen(true);
+  //     });
+
+  //   // setdetailbool(true);
+  //   // setimval(i);
+  // }
+
+
+  const showmoviesbygenre = (type_movies) => {
+    axios
+      .get(`https://doomovies-api.gxc-x.com/api/movies?fields[0]=title&fields[1]=type_movies&fields[2]=year&fields[3]=imdb&fields[4]=type&fields[5]=image_poster&filters[type_movies][$contains]=${type_movies}`)
+      // .get(`http://localhost:1337/api/movies?fields[0]=title&fields[1]=type_movies&fields[2]=year&fields[3]=imdb&fields[4]=type&fields[5]=image_poster&filters[title][$contains]=${stext}`)
+      // .get(`https://www.omdbapi.com/?apikey=4eb65943&s=${stext}`)
+      .then((res) => {
+        setresult(res.data.data.map((p) => p));
+        // setresult(res.data.Search.map((p) => p));
+        // console.log(res.data) // maiza
+        // console.log(res.data.data[0].attributes) // maiza
+        // console.log(res.data.Search[0]) // maiza
+
+      })
+      .catch((error) => {
+        //alert("No search results found!! check for spelling ");
+        setOpen(true);
+      });
+      show2();
+     
+  };
+  
   const show = () => {
     axios
-      .get(`https://www.omdbapi.com/?apikey=4eb65943&s=${stext}`)
+    .get(`https://doomovies-api.gxc-x.com/api/movies?fields[0]=title&fields[1]=type_movies&fields[2]=year&fields[3]=imdb&fields[4]=type&fields[5]=image_poster&filters[title][$contains]=${stext}`)
+      // .get(`http://localhost:1337/api/movies?fields[0]=title&fields[1]=type_movies&fields[2]=year&fields[3]=imdb&fields[4]=type&fields[5]=image_poster&filters[title][$contains]=${stext}`)
+      // .get(`http://0.0.0.0:1337/api/movies?fields[0]=title&fields[1]=year&fields[2]=imdb&fields[3]=type&fields[4]=image_poster&pagination[page]=1&pagination[pageSize]=7&filters[title][$contains]=${stext}`)
+      // .get(`https://www.omdbapi.com/?apikey=4eb65943&s=${stext}`)
       .then((res) => {
-        setresult(res.data.Search.map((p) => p));
+        setresult(res.data.data.map((p) => p));
+        // setresult(res.data.Search.map((p) => p));
+        // console.log(res.data) // maiza
+        // console.log(res.data.data[0].attributes) // maiza
+        // console.log(res.data.Search[0]) // maiza
+
+      })
+      .catch((error) => {
+        //alert("No search results found!! check for spelling ");
+        setOpen(true);
+      });
+      // show2();
+     
+  };
+
+  const showType = () => {
+    axios
+    
+      .get(`https://doomovies-api.gxc-x.com/api/movies?fields[0]=title&fields[1]=year&fields[2]=imdb&fields[3]=type&fields[4]=image_poster&pagination[page]=1&pagination[pageSize]=10&filters[title][$contains]=${stext}`)
+      // .get(`https://www.omdbapi.com/?apikey=4eb65943&s=${stext}`)
+      .then((res) => {
+        setresult(res.data.data.map((p) => p));
+        // setresult(res.data.Search.map((p) => p));
+        // console.log(res.data) // maiza
+        // console.log(res.data.data[0].attributes) // maiza
+        // console.log(res.data.Search[0]) // maiza
+
       })
       .catch((error) => {
         //alert("No search results found!! check for spelling ");
@@ -44,12 +155,15 @@ const List = () => {
      
   };
 
+
+
   const show2 = () => {
     axios
-    .get(`https://www.omdbapi.com/?apikey=5fcb333a&s=${stext}&page=2`)
+    .get(`https://doomovies-api.gxc-x.com/api/movies?fields[0]=title&fields[1]=type_movies&fields[2]=year&fields[3]=imdb&fields[4]=type&fields[5]=image_poster&pagination[page]=2&pagination[pageSize]=7&filters[title][$contains]=${stext}`)
     .then((res) => {
       setresult2(res.data.Search.map((s) => s));
-      
+      // console.log(res.data)  // maiza
+
     })
     .catch((error) => {
      
@@ -69,6 +183,7 @@ const List = () => {
   
   useEffect(() => {
     show();
+    showmenuleft();
   }, []);
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -88,9 +203,9 @@ const List = () => {
     image: require('./WatchAnyMovieLogo.png') ,
     imageAnimation: 'flip',
     backgroundColor: '#212121',
-    // textAnimation: "flip",
-    // textColor: 'white',
-    // text:'Watch Any Movie'
+    textAnimation: "flip",
+    textColor: 'white',
+    text:'Watch Any Movie'
     }
    
 		// },
@@ -147,14 +262,35 @@ const List = () => {
           <br />
         </div>
         <br />
-        {/* <Display result={result}/> */}
-        <center>
+        <div class="container-fluid">
+          {/* <nav class="nav justify-content-center">
+            {menuleft.map((p) => (
+                <a class="nav-link" href="#">{p.attributes.title_category}</a>
+            ))}
+          </nav> */}
+          <nav class="nav justify-content-center">
+            <a class="nav-link active" href="#">Active</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link disabled" href="#">Disabled</a>
+          </nav>
+        </div>
+        <div class="container-fluid">
+        <div class="row">
+          <div class="col-2">
+            <nav class="nav flex-column">
+              {menuleft.map((p) => (
+                <a  key={p.id} onClick={() => showmoviesbygenre(p.attributes.title_category)} class="nav-link" href="#">{p.attributes.title_category}</a>
+              ))}
+            </nav>
+          </div>
+          <div class="col-8">
           <div className="resultContainer">
             {result.map((p) => (
-              <div key={p.imdbID} onClick={() => showDetail(p.imdbID)}>
+              <div key={p.id} onClick={() => showDetail(p.id)}>
                 <Card className="movieCard">
                   <CardActionArea>
-                    <img className="moviePoster" src={p.Poster} alt={p.Title} />
+                    <img className="moviePoster" src={p.attributes.image_poster} alt={p.attributes.image_poster} />
 
                     <span
                       variant="contained"
@@ -185,11 +321,11 @@ const List = () => {
             ))}
 
             {/* result2 */}
-            {result2.map((s) => (
-              <div key={s.imdbID} onClick={() => showDetail(s.imdbID)}>
+            {result2.map((p) => (
+              <div key={p.id} onClick={() => showDetail(p.id)}>
                 <Card className="movieCard">
                   <CardActionArea>
-                    <img className="moviePoster" src={s.Poster} alt={s.Title} />
+                    <img className="moviePoster" src={p.attributes.image_poster} alt={p.attributes.image_poster} />
 
                     <span
                       variant="contained"
@@ -202,7 +338,7 @@ const List = () => {
                         borderRadius: "4px",
                       }}
                     >
-                      <b> {s.Year}</b>
+                       {p.Year}
                     </span>
                     <div className="middle">
                       <div className="text">
@@ -213,13 +349,27 @@ const List = () => {
                         />
                       </div>
                     </div>
-                    <div className="overlay">{s.Title}</div>
+                    <div className="overlay">{p.Title}</div>
                   </CardActionArea>
                 </Card>
               </div>
             ))}
           </div>
-        </center>
+          </div>
+          <div class="col-2">
+            <nav class="nav flex-column">
+              <a class="nav-link active" href="#">Active</a>
+              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </nav>
+          </div>
+        </div>
+        </div>
+
+
+        
+ 
         <Snackbar
         anchorOrigin={{
           vertical: 'top',

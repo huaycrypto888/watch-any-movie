@@ -15,18 +15,9 @@ import IconButton from "@material-ui/core/IconButton";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-
-
 import { useTheme } from "@material-ui/core/styles";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ScriptTag from 'react-script-tag';
-
-
-
-
-
-
-
 
 const Detail = (props) => {
   const theme = useTheme();
@@ -60,20 +51,23 @@ const Detail = (props) => {
 
   
   axios
-    .get(`https://www.omdbapi.com/?apikey=e630e8d2&i=${props.imval}`)
+    .get(`https://doomovies-api.gxc-x.com/api/movies/${props.imval}`)
     .then((res) => {
-      setposter(res.data.Poster);
-      setyear("(" + res.data.Year + ")");
-      setgenre(res.data.Genre);
-      setplot(res.data.Plot);
-      settitle(res.data.Title);
-      setimdbrate("Imdb: " + res.data.imdbRating);
-      setmetascore("Metascore: " + res.data.Metascore);
-      setmtype(res.data.Type);
+      setposter(res.data.data.attributes.image_poster);
+      setyear("(" + res.data.data.attributes.year + ")");
+      setgenre(res.data.data.attributes.type_movies);
+      setplot(res.data.data.attributes.description);
+      settitle(res.data.data.attributes.title);
+      setimdbrate("Imdb: " + res.data.data.attributes.score);
+      // setmetascore("Metascore: " + res.data.data.Metascore);
+      setmtype(res.data.data.attributes.type);
       setmovielink(
-      
-        `javascript:window.location.replace("https://database.gdriveplayer.io/player.php?imdb=${props.imval}")`
-       // `https://videospider.in/getvideo?key=Ez99ULqORLkSi7LH&video_id=${props.imval}`
+        res.data.data.attributes.file_main
+        // "https://freemovie8k-player.ggcdn.xyz/embed/rbzazj4wxqqeepo"
+        // "https://freemovie8k-player.ggcdn.xyz/embed/98ru6jyqd1hukxs"
+        // 'https://freemovie8k-player.ggcdn.xyz/embed/9f33d3r181ygsiy'
+        // `javascript:window.location.replace("https://database.gdriveplayer.io/player.php?imdb=${props.imval}")`
+        // `https://videospider.in/getvideo?key=Ez99ULqORLkSi7LH&video_id=${props.imval}`
       
       );
       setserieslink(
@@ -83,8 +77,23 @@ const Detail = (props) => {
       // `https://fsapi.xyz/tv-tmdb/84105-2-4`
       
       );
-      
-      
+
+      // console.log('file_main')
+      // console.log(res.data.data.attributes.file_main)
+      // console.log(res.data.data.attributes.image_poster)
+
+      /* maiza
+      console.log('poster = ' + res.data.Poster)
+      console.log('Year = ' + res.data.Year)
+      console.log('Genre = ' + res.data.Genre)
+      console.log('Plot = ' + res.data.Plot)
+      console.log('Title = ' + res.data.Title)
+      console.log('imdbRating = ' + res.data.imdbRating)
+      console.log('Metascore = ' + res.data.Metascore)
+      console.log('Type = ' + res.data.Type)
+      console.log('imval = ' + props.imval)
+      */
+    //  console.log(res.data);  // maiza
     });
 
     
@@ -417,7 +426,8 @@ const Detail = (props) => {
                
                  
                 }
-             
+                
+                // setmovielink('https://freemovie8k-player.ggcdn.xyz/embed/9f33d3r181ygsiy'); // maiza
                 setmovielink(event.target.value+`${props.imval}`);
               }
               }
@@ -633,7 +643,7 @@ const Detail = (props) => {
            <ArrowBackIcon fontSize="large" />
         
           </IconButton>
-          <Button
+      <Button
         variant="contained"
         color="secondary"
         style={{
@@ -646,8 +656,7 @@ const Detail = (props) => {
           background: "rgb(0,0,0,0.5)",
           borderRadius: "100%",
           
-        }}
-      >
+        }}>
         <a href={'magnet:?xt=urn:btih:'+magnetUri} download style={{textDecoration:"none", color:"white"}}>
           <CloudDownloadIcon />
         </a>
@@ -659,14 +668,6 @@ const Detail = (props) => {
         
        
         
-          
- 
-
-
-
-
-         
-       
       </Dialog>
     
 
